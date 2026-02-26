@@ -5,19 +5,19 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.stream.IntStream;
 /**
  * Deze klasse slaat een matrix op
- * @invar |getNumberrows() > 0
- * @invar | getNumberColumns() >0
- * @invar | getMatrixrowmajor() != null
- * @invar | getMatrixarrayrows() != null
+ * @immutable
  */
 
 public class Matrices {
 	/**
-	 * 
+	 * @invar | getNumberrows() > 0
+	 * @invar | getNumberColumns() >0
+	 * @invar | getMatrixrowmajor() != null
+	 * @invar | getMatrixarrayrows() != null
 	 * 
 	 */
 	
-	private int[] matrix; // opgeslagen in row major order
+	private double[] matrix; // opgeslagen in row major order
 	private int numcol;
 	private int numrow;
 	
@@ -29,24 +29,24 @@ public class Matrices {
 	 */
 	
 	public int getNumberrows() {
-		fail("Not yet implemented");
+		return this.numrow;
 		
 	}
 	/**
 	 * Geeft heet aantal kolommen van het matrix-object terug
-	 * @post | result == getMatrixarrayrows()[1].length
+	 * @post | result == getMatrixarrayrows()[0].length
 	 * 
 	 */
 	public int getNumberColumns() {
-		fail("Not yet implemented");
+		return this.numcol;
 	}
 	/**
 	 * Geeft heet aantal kolommen van het matrix-object terug
 	 * @post | result == getMatrixarrayrows()[row][col]
 	 * 
 	 */
-	public int getElementat(int row, int col) {
-		fail("Not yet implemented");
+	public double getElementat(int row, int col) {
+		return this.matrix[this.numcol*row+col].clone();
 	}
 	/**
 	 * Geeft de hele matrix terug in row major order
@@ -55,8 +55,8 @@ public class Matrices {
 	 * @post | IntStream.range(0,getNumberrows()).allMatch(i->IntStream.range(0,getNumberColumns()).allMatch(k->result[i*getNumberColumns()+k]==getMatrixarrayrows()[i][k]))
 	 * 
 	 */
-	public int[] getMatrixrowmajor() {
-		fail("Not yet implemented");
+	public double[] getMatrixrowmajor() {
+		return this.matrix.clone();
 	}
 	/**
 	 * Geeft de hele matrix terug in column major order
@@ -64,8 +64,13 @@ public class Matrices {
 	 * @post | result != null
 	 * @post | IntStream.range(0,getNumberColumns()).allMatch(i->IntStream.range(0,getNumberrows()).allMatch(k->result[i*getNumberrows()+k]==getMatrixarrayrows()[i][k]))
 	 */
-	public int[] getMatrixcolmajor() {
-		fail("Not yet implemented");
+	public double[] getMatrixcolmajor() {
+		double[] colmajor = new double[this.matrix.length];
+		for(int i=0;i<this.numrow;i++)
+			for(int k=0;k<this.numcol;k++)
+				colmajor[this.numrow*k+i] = this.matrix[this.numcol*i+k];
+		return colmajor;
+		
 	}
 	/**
 	 * Geeft de matrix terug in onder de vorm van een array van rijen
@@ -74,30 +79,47 @@ public class Matrices {
 	 * @post | result.length == getNumberrows()
 	 * @post | result[0].length == getNumberColumns()
 	 */
-	public int[][] getMatrixarrayrows() {
-		fail("Not yet implemented");
+	public double[][] getMatrixarrayrows() {
+		double[][] arrayrows = new double[this.numrow][];
+		double[] row = new double[this.numcol];
+		for(int i=0;i<this.numrow;i++) {
+			for(int k=0;k<this.numcol;k++) {
+				row[k] = this.matrix[this.numcol*i+k];
+			arrayrows[i] = row;
+			}}
+		return arrayrows;
 	}
 	
 	/**
 	 * Deze methode laat toe om een matrix aan te maken
 	 * @throws IllegalArgumentException | voorstelling == null
+	 * @throws IllegalArgumentException | numcol*numrow != voorstelling.length
 	 * @post | getMatrixrowmajor() == voorstelling
 	 * @post | getNumberColumns() == numcol
 	 * @post | getNumberrows() == numrow
 	 */
-	public Matrices(int[] voorstelling, int numcol, int numrow) {
-		fail("Not yet implemented");
+	public Matrices(double[] voorstelling, int numcol, int numrow) {
+		if(voorstelling == null)
+			throw new IllegalArgumentException();
+		if(numcol*numrow != voorstelling.length)
+			throw new IllegalArgumentException();
+		this.matrix = voorstelling;
+		this.numcol = numcol;
+		this.numrow = numrow;
 	}
 	
 	/**
 	 * Deze methode laat toe om elke ementen van een matrix te vermenigvuldigen met een gegeven scalair getal
-	 * @mutates | this
+	 * @creates | result
 	 * @post | IntStream.range(0,getNumberrows()).allMatch(i->old(getMatrixrowmajor().clone())[i]*factor == getMatrixrowmajor()[i])
 	 * @post | getNumberrows() == old(getNumberrows())
 	 * @post | getNumberColumns() == old(getNumberColumns())
 	 */
 	public void scaled(int factor) {
-		fail("Not yet implemented");
+		int[] nieuwevoorstelling = this.matrix.clone();
+		for(int i=0;i<matrix.length;i++)
+			matrix[i] = factor*nieuwevoorstelling[i];
+		Matrices nieuwematrix = new Matrices(nieuwevoorstelling,this.numcol,this.numrow);
 	}
 	/**
 	 * Deze methode telt twee matrices op en geeft het resultaat terug.
@@ -111,8 +133,15 @@ public class Matrices {
 	 * @post | result.getNumberrows() == mat1.getNumberrows()
 	 */
 	public static Matrices plus(Matrices mat1, Matrices mat2) {
+		int[] voorstelling1 = mat1.getMatrixrowmajor();
+		int[] voorstelling2 = mat2.getMatrixrowmajor();
+		int[] somvoorstelling = new int[voorstelling1.length];
+		for(int i=0;i<voorstelling1.length;i++)
+			somvoorstelling[i] = voorstelling1[i] + voorstelling2[i]; // herkent i niet 
+		Matrices nieuwematrix = new Matrices(somvoorstelling,mat1.getNumberColumns(),mat1.getNumberrows());
+		return nieuwematrix;
+			
 		
-		fail("Not yet implemented");
 	}
 	
 }

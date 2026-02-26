@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class MatricesTest {
-	int[] myvoorstelling = {1,2,3,4,5,6,7,8,9};
+	double[] myvoorstelling = {1,2,3,4,5,6,7,8,9};
 	int mynumrows = 3;
 	int mynumcols = 3;
 	Matrices mymatrix = new Matrices(myvoorstelling,mynumcols,mynumrows);
@@ -25,24 +25,32 @@ class MatricesTest {
 	}
 	@Test
 	void testscaled() {
-		int[] mynulvoorstelling = {0,0,0,0,0,0,0,0,0};
-		int[] myscaled = {2,4,6,8,10,12,14,16,18};
+		double[] mynulvoorstelling = {0,0,0,0,0,0,0,0,0};
+		double[] myscaled = {2,4,6,8,10,12,14,16,18};
 		mymatrix.scaled(0);
 		assertArrayEquals(mynulvoorstelling, mymatrix.getMatrixrowmajor());
 		Matrices mymatrix = new Matrices(myvoorstelling,mynumcols,mynumrows);
 		mymatrix.scaled(1);
 		assertArrayEquals(myvoorstelling,mymatrix.getMatrixrowmajor());
 		Matrices mymatrix2 = new Matrices(myvoorstelling,mynumcols,mynumrows);
-		mymatrix.scaled(2);
+		mymatrix2.scaled(2);
 		assertArrayEquals(myscaled,mymatrix2.getMatrixrowmajor());
 		
 	}
 	@Test
 	void testplus() {
-		int[] myanderevoorstelling = {1,1,1,1,1,1,1,1,1};
+		double[] myanderevoorstelling = {1,1,1,1,1,1,1,1,1};
 		Matrices myandere = new Matrices(myanderevoorstelling,mynumcols,mynumrows);
-		int[] myresultplusvoorstelling = {2,3,4,5,6,7,8,9,10};
-		Matrices resultplus = new Matrices(myresultplusvoorstelling,mynumcols,mynumrows);
-		assertEquals(resultplus,Matrices.plus(myandere,mymatrix));
+		double[] myresultplusvoorstelling = {2,3,4,5,6,7,8,9,10};
+		Matrices plusmatrix = Matrices.plus(myandere,mymatrix);
+		assertEquals(myresultplusvoorstelling,plusmatrix.getMatrixarrayrows());
+	}
+	@Test
+	void testrepresnetationexposure( ) {
+		double[] arr = mymatrix.getMatrixrowmajor();
+		arr[0] = 999;
+		assertEquals(1,mymatrix.getElementat(0,0));
+		//Deze test is niet 100% volledig
+				
 	}
 }
