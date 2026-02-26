@@ -13,11 +13,11 @@ class MatricesTest {
 	
 	@Test
 	void testconstructorenandere() {
-		int[][] myarrayrows = {{1,2,3},{1,2,3},{1,2,3}};
+		double[][] myarrayrows = {{1,2,3},{1,2,3},{1,2,3}};
 		assertEquals(3,mymatrix.getNumberColumns());
 		assertEquals(3,mymatrix.getNumberrows());
 		assertArrayEquals(myvoorstelling,mymatrix.getMatrixrowmajor());
-		int[] colmyvoorstelling = {1,4,7,2,5,8,3,6,9};
+		double[] colmyvoorstelling = {1,4,7,2,5,8,3,6,9};
  		assertArrayEquals(colmyvoorstelling,mymatrix.getMatrixcolmajor());
  		assertArrayEquals(myarrayrows,mymatrix.getMatrixarrayrows());
  		assertEquals(1,mymatrix.getElementat(0,0));
