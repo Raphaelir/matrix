@@ -2,6 +2,7 @@ package matrices;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 /**
  * Deze klasse slaat een matrix op
@@ -61,7 +62,7 @@ public class Matrices {
 	 * Geeft de hele matrix terug in column major order
 	 * @creates | result
 	 * @post | result != null
-	 * @post | IntStream.range(0,getNumberColumns()).allMatch(i->IntStream.range(0,getNumberrows()).allMatch(k->result[i*getNumberrows()+k]==getMatrixarrayrows()[i][k]))
+	 * @post | IntStream.range(0,getNumberrows()).allMatch(i->IntStream.range(0,getNumberColumns()).allMatch(k->result[k*getNumberrows()+i]==getMatrixarrayrows()[i][k]))
 	 */
 	public double[] getMatrixcolmajor() {
 		double[] colmajor = new double[this.matrix.length];
@@ -78,8 +79,8 @@ public class Matrices {
 	 */
 	public double[][] getMatrixarrayrows() {
 		double[][] arrayrows = new double[this.numrow][];
-		double[] row = new double[this.numcol];
 		for(int i=0;i<this.numrow;i++) {
+			double[] row = new double[this.numcol];
 			for(int k=0;k<this.numcol;k++) {
 				row[k] = this.matrix[this.numcol*i+k];
 			arrayrows[i] = row;
@@ -91,7 +92,7 @@ public class Matrices {
 	 * Deze methode laat toe om een matrix aan te maken
 	 * @throws IllegalArgumentException | voorstelling == null
 	 * @throws IllegalArgumentException | numcol*numrow != voorstelling.length
-	 * @post | getMatrixrowmajor().equals(voorstelling)
+	 * @post | Arrays.equals(getMatrixrowmajor(),voorstelling)
 	 * @post | getNumberColumns() == numcol
 	 * @post | getNumberrows() == numrow
 	 */
@@ -108,14 +109,14 @@ public class Matrices {
 	/**
 	 * Deze methode laat toe om elke ementen van een matrix te vermenigvuldigen met een gegeven scalair getal
 	 * @creates | result
-	 * @post | IntStream.range(0,getNumberrows()).allMatch(i->old(getMatrixrowmajor().clone())[i]*factor == getMatrixrowmajor()[i])
+	 * @post | IntStream.range(0,getNumberrows()).allMatch(i->getMatrixrowmajor().clone()[i]*factor == result.getMatrixrowmajor()[i])
 	 * @post | getNumberrows() == old(getNumberrows())
 	 * @post | getNumberColumns() == old(getNumberColumns())
 	 */
 	public Matrices scaled(int factor) {
-		double[] nieuwevoorstelling = this.matrix.clone();
+		double[] nieuwevoorstelling = new double[this.matrix.length];
 		for(int i=0;i<matrix.length;i++)
-			matrix[i] = factor*nieuwevoorstelling[i];
+			nieuwevoorstelling[i] = factor*matrix[i];
 		Matrices nieuwematrix = new Matrices(nieuwevoorstelling,this.numcol,this.numrow);
 		return nieuwematrix;
 	}
