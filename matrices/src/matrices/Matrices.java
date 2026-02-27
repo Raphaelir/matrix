@@ -11,12 +11,15 @@ import java.util.stream.IntStream;
 
 public class Matrices {
 	/**
-	 * @invar | this.numrow > 0
-	 * @invar | this.numcol >0
+	 * @invar | this.numrow >= 0
+	 * @invar | this.numcol >= 0
 	 * @invar | this.matrix != null
+	 * @invar | this.matrix.length >= 0
 	 * 
 	 */
-	
+	/**
+	 * @representationObject
+	 */
 	private double[] matrix; // opgeslagen in row major order
 	private int numcol;
 	private int numrow;
@@ -76,6 +79,9 @@ public class Matrices {
 	 * Geeft de matrix terug in onder de vorm van een array van rijen
 	 * @creates | result
 	 * @post | result != null
+	 * @creates | result, ... result
+	 * @post | result.length == getNumberrows()
+	 * @post | Arrays.stream(result).allMatch(rij -> rij != null && rij.length == getNumberColumns())
 	 */
 	public double[][] getMatrixarrayrows() {
 		double[][] arrayrows = new double[this.numrow][];
@@ -90,6 +96,7 @@ public class Matrices {
 	
 	/**
 	 * Deze methode laat toe om een matrix aan te maken
+	 * @inspects | voorstelling
 	 * @throws IllegalArgumentException | voorstelling == null
 	 * @throws IllegalArgumentException | numcol*numrow != voorstelling.length
 	 * @post | Arrays.equals(getMatrixrowmajor(),voorstelling)
@@ -101,14 +108,14 @@ public class Matrices {
 			throw new IllegalArgumentException();
 		if(numcol*numrow != voorstelling.length)
 			throw new IllegalArgumentException();
-		this.matrix = voorstelling.clone();
+		this.matrix = voorstelling.clone(); // ook wijzigbare objecten die we aanvaarden vd klanten zonder clonen is ook een type van representation exposure.
 		this.numcol = numcol;
 		this.numrow = numrow;
 	}
 	
 	/**
 	 * Deze methode laat toe om elke ementen van een matrix te vermenigvuldigen met een gegeven scalair getal
-	 * @creates | result
+	 * Geen creates result want is geen wijzigbare object
 	 * @post | IntStream.range(0,getNumberrows()).allMatch(i->getMatrixrowmajor().clone()[i]*factor == result.getMatrixrowmajor()[i])
 	 * @post | getNumberrows() == old(getNumberrows())
 	 * @post | getNumberColumns() == old(getNumberColumns())
@@ -122,6 +129,7 @@ public class Matrices {
 	}
 	/**
 	 * Deze methode telt twee matrices op en geeft het resultaat terug.
+	 * Geen inspects of mutates want immutable klasse
 	 * @pre | mat1 != null
 	 * @pre | mat2 != null
 	 * @pre | mat1.getNumberColumns() == mat2.getNumberColumns()
