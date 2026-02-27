@@ -13,7 +13,7 @@ class MatricesTest {
 	
 	@Test
 	void testconstructorenandere() {
-		double[][] myarrayrows = {{1,2,3},{1,2,3},{1,2,3}};
+		double[][] myarrayrows = {{1,2,3},{4,5,6},{7,8,9}};
 		assertEquals(3,mymatrix.getNumberColumns());
 		assertEquals(3,mymatrix.getNumberrows());
 		assertArrayEquals(myvoorstelling,mymatrix.getMatrixrowmajor());
@@ -43,7 +43,7 @@ class MatricesTest {
 		Matrices myandere = new Matrices(myanderevoorstelling,mynumcols,mynumrows);
 		double[] myresultplusvoorstelling = {2,3,4,5,6,7,8,9,10};
 		Matrices plusmatrix = Matrices.plus(myandere,mymatrix);
-		assertEquals(myresultplusvoorstelling,plusmatrix.getMatrixarrayrows());
+		assertArrayEquals(myresultplusvoorstelling,plusmatrix.getMatrixrowmajor());
 	}
 	@Test
 	void testrepresnetationexposure( ) {

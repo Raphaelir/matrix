@@ -2,10 +2,11 @@ package matrices;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 /**
  * Deze klasse slaat een matrix op
- * @immutable
+ * 
  */
 
 public class Matrices {
@@ -62,7 +63,7 @@ public class Matrices {
 	 * Geeft de hele matrix terug in column major order
 	 * @creates | result
 	 * @post | result != null
-	 * @post | IntStream.range(0,getNumberColumns()).allMatch(i->IntStream.range(0,getNumberrows()).allMatch(k->result[i*getNumberrows()+k]==getMatrixarrayrows()[i][k]))
+	 * @post | IntStream.range(0,getNumberColumns()).allMatch(i->IntStream.range(0,getNumberrows()).allMatch(k->result[k*getNumberrows()+i]==getMatrixarrayrows()[i][k]))
 	 */
 	public double[] getMatrixcolmajor() {
 		double[] colmajor = new double[this.matrix.length];
@@ -92,7 +93,7 @@ public class Matrices {
 	 * Deze methode laat toe om een matrix aan te maken
 	 * @throws IllegalArgumentException | voorstelling == null
 	 * @throws IllegalArgumentException | numcol*numrow != voorstelling.length
-	 * @post | getMatrixrowmajor().equals(voorstelling) // blijkbaar slaagt dat niet altijd
+	 * @post | Arrays.equals(voorstelling,getMatrixrowmajor())
 	 * @post | getNumberColumns() == numcol
 	 * @post | getNumberrows() == numrow
 	 */
@@ -113,12 +114,11 @@ public class Matrices {
 	 * @post | getNumberrows() == old(getNumberrows())
 	 * @post | getNumberColumns() == old(getNumberColumns())
 	 */
-	public Matrices scaled(int factor) {
+	public void scaled(int factor) {
 		double[] nieuwevoorstelling = new double[matrix.length];
 		for(int i=0;i<matrix.length;i++)
 			nieuwevoorstelling[i] = factor*this.matrix[i];
-		Matrices nieuwematrix = new Matrices(nieuwevoorstelling,this.numcol,this.numrow);
-		return nieuwematrix;
+		this.matrix = nieuwevoorstelling;
 	}
 	/**
 	 * Deze methode telt twee matrices op en geeft het resultaat terug.
