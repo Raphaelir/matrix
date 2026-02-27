@@ -50,7 +50,6 @@ class MatricesTest {
 		double[] arr = mymatrix.getMatrixrowmajor();
 		arr[0] = 999;
 		assertEquals(1,mymatrix.getElementat(0,0));
-		//Deze test is niet 100% volledig
-				
+		//Deze test is niet 100% volledigs		
 	}
 }
