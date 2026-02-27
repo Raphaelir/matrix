@@ -75,7 +75,9 @@ public class Matrices {
 	}
 	/**
 	 * Geeft de matrix terug in onder de vorm van een array van rijen
-	 * @creates | result
+	 * @creates | result, ... result
+	 * @post | result.length == getNumberrows()
+	 * @post | Arrays.stream(result).allMatch(rij -> rij != null && rij.length == getNumberColumns())
 	 * @post | result != null
 	 */
 	public double[][] getMatrixarrayrows() {
