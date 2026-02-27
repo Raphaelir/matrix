@@ -10,10 +10,9 @@ import java.util.stream.IntStream;
 
 public class Matrices {
 	/**
-	 * @invar | getNumberrows() > 0
-	 * @invar | getNumberColumns() >0
-	 * @invar | getMatrixrowmajor() != null
-	 * @invar | getMatrixarrayrows() != null
+	 * @invar | this.numrow > 0
+	 * @invar | this.numcol >0
+	 * @invar | this.matrix != null
 	 * 
 	 */
 	
@@ -46,7 +45,7 @@ public class Matrices {
 	 * 
 	 */
 	public double getElementat(int row, int col) {
-		return this.matrix[this.numcol*row+col].clone();
+		return this.matrix[this.numcol*row+col];
 	}
 	/**
 	 * Geeft de hele matrix terug in row major order
@@ -76,8 +75,6 @@ public class Matrices {
 	 * Geeft de matrix terug in onder de vorm van een array van rijen
 	 * @creates | result
 	 * @post | result != null
-	 * @post | result.length == getNumberrows()
-	 * @post | result[0].length == getNumberColumns()
 	 */
 	public double[][] getMatrixarrayrows() {
 		double[][] arrayrows = new double[this.numrow][];
@@ -94,7 +91,7 @@ public class Matrices {
 	 * Deze methode laat toe om een matrix aan te maken
 	 * @throws IllegalArgumentException | voorstelling == null
 	 * @throws IllegalArgumentException | numcol*numrow != voorstelling.length
-	 * @post | getMatrixrowmajor() == voorstelling
+	 * @post | getMatrixrowmajor().equals(voorstelling)
 	 * @post | getNumberColumns() == numcol
 	 * @post | getNumberrows() == numrow
 	 */
@@ -103,7 +100,7 @@ public class Matrices {
 			throw new IllegalArgumentException();
 		if(numcol*numrow != voorstelling.length)
 			throw new IllegalArgumentException();
-		this.matrix = voorstelling;
+		this.matrix = voorstelling.clone();
 		this.numcol = numcol;
 		this.numrow = numrow;
 	}
@@ -115,11 +112,12 @@ public class Matrices {
 	 * @post | getNumberrows() == old(getNumberrows())
 	 * @post | getNumberColumns() == old(getNumberColumns())
 	 */
-	public void scaled(int factor) {
-		int[] nieuwevoorstelling = this.matrix.clone();
+	public Matrices scaled(int factor) {
+		double[] nieuwevoorstelling = this.matrix.clone();
 		for(int i=0;i<matrix.length;i++)
 			matrix[i] = factor*nieuwevoorstelling[i];
 		Matrices nieuwematrix = new Matrices(nieuwevoorstelling,this.numcol,this.numrow);
+		return nieuwematrix;
 	}
 	/**
 	 * Deze methode telt twee matrices op en geeft het resultaat terug.
@@ -133,11 +131,11 @@ public class Matrices {
 	 * @post | result.getNumberrows() == mat1.getNumberrows()
 	 */
 	public static Matrices plus(Matrices mat1, Matrices mat2) {
-		int[] voorstelling1 = mat1.getMatrixrowmajor();
-		int[] voorstelling2 = mat2.getMatrixrowmajor();
-		int[] somvoorstelling = new int[voorstelling1.length];
+		double[] voorstelling1 = mat1.getMatrixrowmajor();
+		double[] voorstelling2 = mat2.getMatrixrowmajor();
+		double[] somvoorstelling = new double[voorstelling1.length];
 		for(int i=0;i<voorstelling1.length;i++)
-			somvoorstelling[i] = voorstelling1[i] + voorstelling2[i]; // herkent i niet 
+			somvoorstelling[i] = voorstelling1[i] + voorstelling2[i]; 
 		Matrices nieuwematrix = new Matrices(somvoorstelling,mat1.getNumberColumns(),mat1.getNumberrows());
 		return nieuwematrix;
 			

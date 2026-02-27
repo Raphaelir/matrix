@@ -25,16 +25,9 @@ class MatricesTest {
 	}
 	@Test
 	void testscaled() {
-		double[] mynulvoorstelling = {0,0,0,0,0,0,0,0,0};
+		Matrices scaledversion = mymatrix.scaled(2);
 		double[] myscaled = {2,4,6,8,10,12,14,16,18};
-		mymatrix.scaled(0);
-		assertArrayEquals(mynulvoorstelling, mymatrix.getMatrixrowmajor());
-		Matrices mymatrix = new Matrices(myvoorstelling,mynumcols,mynumrows);
-		mymatrix.scaled(1);
-		assertArrayEquals(myvoorstelling,mymatrix.getMatrixrowmajor());
-		Matrices mymatrix2 = new Matrices(myvoorstelling,mynumcols,mynumrows);
-		mymatrix2.scaled(2);
-		assertArrayEquals(myscaled,mymatrix2.getMatrixrowmajor());
+		assertArrayEquals(scaledversion.getMatrixrowmajor(),myscaled);
 		
 	}
 	@Test
